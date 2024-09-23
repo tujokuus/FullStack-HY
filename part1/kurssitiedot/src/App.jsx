@@ -1,5 +1,6 @@
 //Header komponentti joka tulostaa otsikon. Käytetään propseja tiedon välittämiseen
 const Header = (props) => {
+  console.log(props);
   return (
     <div>
       <h1>
@@ -10,49 +11,45 @@ const Header = (props) => {
 }
 
 const Content = (props) => {
+  console.log(props.part1.name)
   return (
     <div>
-      {props.parts.map((part, index) => (
-        <p key={index}>
-          {part.part} {part.exercises}
-        </p>
-      ))}
+      <p>{props.part1.name} {props.part1.exercises}</p>
+      <p>{props.part2.name} {props.part2.exercises}</p>
+      <p>{props.part3.name} {props.part3.exercises}</p>
     </div>
   )
 }
 
 const Total = (props) => {
-  console.log(props.parts[0].exercises)
   return  (
   <div>
-    <p>Number of exercises {props.parts[0].exercises + props.parts[1].exercises + props.parts[2].exercises}</p>
+    <p>NNumber of exercises {props.part1.exercises + props.part2.exercises + props.part3.exercises}</p>
   </div>
 )
 }
 
 const App = () => {
   const course = 'Half Stack application development'
-  const parts = [
-    { part: 'Fundamentals of React', exercises: 10},
-    { part: 'Using props to pass data', exercises: 7},
-    { part: 'State of a component', exercises: 14}
-  ]
-
-  const part1 = 'Fundamentals of React'
-  const exercises1 = 10
-  const part2 = 'Using props to pass data'
-  const exercises2 = 7
-  const part3 = 'State of a component'
-  const exercises3 = 14
-
-//Refaktoroi koodi siten, että se koostuu kolmesta uudesta komponentista: Header, Content ja Total. Komponentti App
-//välittää tarpeelliset tiedot kullekin komponentille propsien avulla. Header, CONTENT JA TOTAL
+  
+  const part1 = {
+    name: 'Fundamentals of React',
+    exercises: 10
+  }
+  const part2 = {
+    name: 'Using props to pass data',
+    exercises: 7
+  }
+  const part3 = {
+    name: 'State of a component',
+    exercises: 14
+  }
 
   return (
     <div>
       <Header course={course}/>
-      <Content parts={parts}/>
-      <Total parts={parts}/>
+      <Content part1={part1} part2={part2} part3={part3}/>
+      <Total part1={part1} part2={part2} part3={part3}/>
     </div>
   )
 }
