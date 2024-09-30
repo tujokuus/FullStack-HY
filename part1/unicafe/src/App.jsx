@@ -1,11 +1,5 @@
 import { useState } from 'react'
 
-// <button onClick={() => setCount((count) => count + 1)}>
-//count is {count}
-
-//function App() {
-  //const [count, setCount] = useState(0)
-
   const Header = (props) => {
     return (
       <div>
@@ -34,16 +28,6 @@ import { useState } from 'react'
       </table>
     )
 
-//    return (
-//      <div>
-//        <p>good: {good}</p>
-//        <p>neutral: {neutral}</p>
-//        <p>bad: {bad}</p>
-//        <p>all: {total}</p>
-//        <p>average: {average}</p>
-//        <p>positive: {positive}</p>
-//      </div>
-//    )
   }
 
   const StatisticsLine = ({ text, value }) => {
