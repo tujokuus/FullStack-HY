@@ -1,59 +1,83 @@
 //Header komponentti joka tulostaa otsikon. Käytetään propseja tiedon välittämiseen
 const Header = (props) => {
-  console.log(props);
+//  console.log('headeria kutsuttu', props);
+//  const { courses } = props
   return (
     <div>
       <h1>
-        {props.course.name}
+        { props.course.name }
+        
       </h1>
     </div>
   )
 }
 
-const Content = (props) => {
-  console.log(1);
-  console.log(props.course.parts[0])
-  return (
+const Content = ({ parts }) => {
+  console.log('Content props arvo on', parts);
+
+  return(
     <div>
-      <p>{props.course.parts[0].name} {props.course.parts[0].exercises}</p>
-      <p>{props.course.parts[1].name} {props.course.parts[1].exercises}</p>
-      <p>{props.course.parts[2].name} {props.course.parts[2].exercises}</p>
+      <ul>
+        {parts.map(part => <li key={part.id}>{part.name} {part.exercises}</li>)}
+      </ul>
     </div>
   )
 }
 
-const Total = (props) => {
+const Total = ({ parts }) => {
+  console.log('Total parts ', parts);
+  const totalExercises = parts.reduce((sum, part) => sum + part.exercises, 0)
+  console.log(totalExercises);
   return  (
   <div>
-    <p>Number of exercises {props.course.parts[0].exercises + props.course.parts[1].exercises + props.course.parts[2].exercises}</p>
+    <p>
+      Number of exercises {totalExercises}
+    </p>
   </div>
 )
+}
+
+const Course = ({ course }) => {
+  return (
+    <div>
+      <Header course={course}/>
+      <Content parts={course.parts}/>
+      <Total parts={course.parts}/>
+    </div>
+  )
 }
 
 const App = () => {
   const course = {
     name: 'Half Stack application development',
+    id: 1,
     parts: [
     {
       name: 'Fundamentals of React',
-      exercises: 10
+      exercises: 10,
+      id: 1
     },
     {
       name: 'Using props to pass data',
-      exercises: 7
+      exercises: 7,
+      id: 2
     },
     {
       name: 'State of a component',
-      exercises: 14
-    }
+      exercises: 14,
+      id: 3
+    },
+    {
+      name: 'testi123',
+      exercises: 14,
+      id: 4
+    },
     ]
   }
 
   return (
     <div>
-      <Header course={course}/>
-      <Content course={course}/>
-      <Total course={course}/>
+      <Course course={course}/>
     </div>
   )
 }
