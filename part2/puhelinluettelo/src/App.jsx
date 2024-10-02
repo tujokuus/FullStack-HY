@@ -4,11 +4,35 @@ function checkAvailability(persons, newName) {
   return persons.some((person) => person.name === newName)
 }
 
-const Search = ({ value, onChange }) => {
+const Filter = ({ value, handleSearchChange }) => {
   return (
     <div>
-      search <input value={value} onChange={onChange} />
+      filter: <input value={value} onChange={handleSearchChange} />
     </div>
+  )
+}
+
+const PersonForm = ({ formData, formHandlers }) => {
+  const { newName, newNumber } = formData
+  const { handleNameChange, handleNumberChange, addName } = formHandlers
+
+  return (
+    <form onSubmit={addName}>
+        <div>name: <input value={newName} onChange={handleNameChange}/></div>
+        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
+        <div>
+          <button type="submit">add</button>
+        </div>
+      </form>
+  )
+}
+
+const Persons = ({ persons }) => {
+  return(
+    <ul>
+    {persons.map(person => 
+      <li key={person.id}> {person.name} {person.number} </li>)}
+  </ul>
   )
 }
 
@@ -59,19 +83,16 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <div>search: <input value={search} onChange={handleSearchChange}/> </div>
-      <form onSubmit={addName}>
-        <div>name: <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-      <h2>Numbers</h2>
-      <ul>
-        {filteredPersons.map(person => 
-          <li key={person.id}> {person.name} {person.number} </li>)}
-      </ul>
+
+      <Filter value={search} handleSearchChange={handleSearchChange} />
+      <h3>add a new</h3>
+      <PersonForm 
+        formData={{ newName, newNumber }}
+        formHandlers={{ handleNameChange, handleNumberChange, addName }}
+      />
+      <h3>Numbers</h3>
+      <Persons persons={filteredPersons} />
+
     </div>
   )
 
