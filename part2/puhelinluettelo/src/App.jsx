@@ -1,39 +1,10 @@
 import { useEffect, useState } from 'react'
+import Filter from './components/Filter'
+import PersonForm from './components/PersonForm'
+import Persons from './components/Persons'
 
 function checkAvailability(persons, newName) {
   return persons.some((person) => person.name === newName)
-}
-
-const Filter = ({ value, handleSearchChange }) => {
-  return (
-    <div>
-      filter: <input value={value} onChange={handleSearchChange} />
-    </div>
-  )
-}
-
-const PersonForm = ({ formData, formHandlers }) => {
-  const { newName, newNumber } = formData
-  const { handleNameChange, handleNumberChange, addName } = formHandlers
-
-  return (
-    <form onSubmit={addName}>
-        <div>name: <input value={newName} onChange={handleNameChange}/></div>
-        <div>number: <input value={newNumber} onChange={handleNumberChange}/></div>
-        <div>
-          <button type="submit">add</button>
-        </div>
-      </form>
-  )
-}
-
-const Persons = ({ persons }) => {
-  return(
-    <ul>
-    {persons.map(person => 
-      <li key={person.id}> {person.name} {person.number} </li>)}
-  </ul>
-  )
 }
 
 const App = () => {
