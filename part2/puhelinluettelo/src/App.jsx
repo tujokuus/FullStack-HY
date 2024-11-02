@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react'
+import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -8,15 +9,20 @@ function checkAvailability(persons, newName) {
 }
 
 const App = () => {
-  const [persons, setPersons] = useState([
-    { name: 'Arto Hellas', number: '040-123456', id: 1 },
-    { name: 'Ada Lovelace', number: '39-44-5323523', id: 2 },
-    { name: 'Dan Abramov', number: '12-43-234345', id: 3 },
-    { name: 'Mary Poppendieck', number: '39-23-6423122', id: 4 }
-  ]) 
+  const [persons, setPersons] = useState([]) 
   const [newName, setNewName] = useState('lisää nimi')
   const [newNumber, setNewNumber] = useState('')
   const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    console.log('effect')
+    axios
+      .get('http://localhost:3001/persons')
+      .then(response => {
+        console.log('promse fulfilled')
+        setPersons(response.data)
+      })
+  }, [])
 
   const addName = (event) => {
     event.preventDefault()
@@ -24,13 +30,19 @@ const App = () => {
     if (checkAvailability(persons, newName)){
       alert(`${newName} is already added to phonebook`)
     } else {
-      const noteObject = {
+      const personObject = {
       name: newName,
       number: newNumber,
-      id: String(persons.length + 1),
     }
-    setPersons(persons.concat(noteObject))
-    setNewName('')
+
+    axios
+      .post('http://localhost:3001/persons', personObject)
+      .then(response => {
+        console.log(response)
+        setPersons(persons.concat(personObject))
+        setNewName('')
+        setNewNumber('')
+    })
     }
     
   }
