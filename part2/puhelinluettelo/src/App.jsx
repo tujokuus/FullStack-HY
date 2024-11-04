@@ -38,7 +38,7 @@ const App = () => {
       .create(personObject)
       .then(response => {
         console.log(response)
-        setPersons(persons.concat(personObject))
+        setPersons(persons.concat(response.data))
         setNewName('')
         setNewNumber('')
     })
@@ -49,6 +49,28 @@ const App = () => {
   const filteredPersons = persons.filter(person => 
     person.name.toLowerCase().includes(search.toLowerCase())
   )
+
+  const handleDelete = (id) => {
+    const personToDelete = persons.find((p) => p.id === id)
+
+    if (!personToDelete) {
+      alert('Person not fould in phonebook')
+      return
+    }
+
+    if (window.confirm(`Delete ${personToDelete.name}?`)) {
+      personsService
+        .remove(id)
+        .then(() => {
+          setPersons(persons.filter((p) => p.id !== id))
+        })
+        .catch(error => {
+          console.error('Failed to delete person:', error)
+          alert('Failed to delete person. They may have already been removed.')
+          setPersons(persons.filter(p => p.id !== id)) // Päivitä näkyvyys myös jos poistaminen epäonnistuu
+        })
+    }
+  }
 
   const handleNumberChange = (event) => {
     setNewNumber(event.target.value)
@@ -73,7 +95,9 @@ const App = () => {
         formHandlers={{ handleNameChange, handleNumberChange, addName }}
       />
       <h3>Numbers</h3>
-      <Persons persons={filteredPersons} />
+      <Persons
+        persons={filteredPersons}
+        onDelete={handleDelete} />
 
     </div>
   )
